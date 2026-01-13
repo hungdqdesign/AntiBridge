@@ -1,4 +1,4 @@
-# 🌉 AntiBridge v1.2.0
+# <img src="assets/icon-small.png" width="32" height="32" alt="icon"> AntiBridge v1.2.0
 
 **A bridge between you and Antigravity.**
 
