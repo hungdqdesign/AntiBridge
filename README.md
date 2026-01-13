@@ -4,7 +4,7 @@
 
 Control your AI coding agent from any browser on the same network.
 
-![AntiBridge Logo](assets/Logo_AntiBridge.png)
+![AntiBridge Logo](assets/Logo_AntiBridge_Alpha.png)
 
 ---
 
@@ -98,7 +98,7 @@ AntiBridge_v1.2.0/
 
 MIT License
 
-Copyright (c) 2026 Linh Bui (linhbq82@gmail.com)
+Copyright (c) 2026 Linh Ban Banh Bao
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -118,8 +118,9 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ## 👨‍💻 Author
 
-**Linh Bui**  
-📧 linhbq82@gmail.com
+**Linh Ban Banh Bao**  
+🌐 [Facebook](https://www.facebook.com/linhbuiart.io.vn/)  
+🔗 [GitHub](https://github.com/linhbanbanhbao/AntiBridge)
 
 ---
 
