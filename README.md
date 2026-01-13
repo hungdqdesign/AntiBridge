@@ -7,6 +7,10 @@ Control your AI coding agent from any browser on the same network.
 
 ![AntiBridge Logo](assets/Logo_AntiBridge.png)
 
+## 🎬 Preview
+
+![AntiBridge Demo](assets/preview.gif)
+
 ---
 
 ## ✨ Features
