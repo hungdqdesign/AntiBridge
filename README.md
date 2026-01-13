@@ -7,10 +7,6 @@ Control your AI coding agent from any browser on the same network.
 
 ![AntiBridge Logo](assets/Logo_AntiBridge.png)
 
-## 🎬 Preview
-
-![AntiBridge Demo](assets/preview.gif)
-
 ---
 
 ## ✨ Features
@@ -149,6 +145,16 @@ copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+---
+
+## 🎬 Demo
+
+### 📱 Mobile Control
+<img src="assets/preview.gif" width="600" alt="Mobile Demo">
+
+### 💻 PC Web Interface
+<img src="assets/pc.gif" width="600" alt="PC Demo">
 
 ---
 
