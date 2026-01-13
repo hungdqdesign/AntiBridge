@@ -2,7 +2,8 @@
 
 **A bridge between you and Antigravity.**
 
-Control your AI coding agent from any browser on the same network.
+Control your AI coding agent from any browser on the same network.  
+🌐 **Remote Access:** Use [Tailscale](https://tailscale.com/) to access from anywhere outside your LAN!
 
 ![AntiBridge Logo](assets/Logo_AntiBridge.png)
 
@@ -15,6 +16,7 @@ Control your AI coding agent from any browser on the same network.
 - 💾 **Chat History** - Your conversations persist across sessions
 - 🔄 **Auto-reconnect** - Automatically reconnects when connection drops
 - 🌓 **Dark Theme** - Easy on the eyes for long coding sessions
+- 🌐 **Remote Access** - Use Tailscale for secure access from anywhere
 
 ---
 
@@ -37,11 +39,41 @@ To find your PC's IP address, open Command Prompt and run `ipconfig`.
 
 ---
 
+## 🌐 Remote Access with Tailscale
+
+Want to access AntiBridge from outside your home/office network? Use **Tailscale**!
+
+### Setup Steps:
+
+1. **Install Tailscale** on both devices:
+   - PC running AntiBridge: https://tailscale.com/download/windows
+   - Phone/Remote device: https://tailscale.com/download
+
+2. **Login** with the same account on both devices
+
+3. **Get Tailscale IP** of your PC:
+   - Open Tailscale on PC
+   - Note the IP (usually `100.x.x.x`)
+
+4. **Access from anywhere:**
+   ```
+   http://100.x.x.x:8000
+   ```
+
+### Benefits:
+- ✅ **Secure** - End-to-end encrypted connection
+- ✅ **No port forwarding** - Works through NAT
+- ✅ **Free tier** - 100 devices free
+- ✅ **Works on mobile data** - Access from anywhere with internet
+
+---
+
 ## 📋 Requirements
 
 - **Node.js 18+** - [Download here](https://nodejs.org/)
 - **Antigravity IDE** - Your AI coding agent
 - **Windows 10/11**
+- **Tailscale** (optional) - For remote access outside LAN
 
 ---
 
