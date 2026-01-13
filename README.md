@@ -153,7 +153,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 ### 📱 Mobile Control
 <img src="assets/preview.gif" width="600" alt="Mobile Demo">
 
-### 💻 PC Web Interface
+### 💻 PC VIEW ANTIGRAVITY
 <img src="assets/pc.gif" width="600" alt="PC Demo">
 
 ---
