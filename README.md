@@ -4,7 +4,7 @@
 
 Control your AI coding agent from any browser on the same network.
 
-![AntiBridge Logo](assets/Logo_AntiBridge_Alpha.png)
+![AntiBridge Logo](assets/Logo_AntiBridge.png)
 
 ---
 
