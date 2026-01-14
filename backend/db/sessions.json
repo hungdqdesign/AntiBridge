@@ -16,6 +16,13 @@
       "role": "user",
       "content": "hello",
       "created_at": "2026-01-14T06:00:31.704Z"
+    },
+    {
+      "id": 2,
+      "session_id": "74bf99c7",
+      "role": "user",
+      "content": "hi",
+      "created_at": "2026-01-14T06:04:08.375Z"
     }
   ],
   "approvals": []

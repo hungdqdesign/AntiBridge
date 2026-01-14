@@ -320,7 +320,7 @@ function getClipboard() {
     return new Promise((resolve, reject) => {
         const isWin = process.platform === 'win32';
         const cmd = isWin ? 'powershell -Command "Get-Clipboard"' : 'pbpaste';
-        
+
         exec(cmd,
             { encoding: 'utf8', timeout: 5000 },
             (error, stdout, stderr) => {
