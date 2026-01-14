@@ -45,21 +45,41 @@ router.post('/', async (req, res) => {
             }
         }
 
-        // Phương pháp 2: Fallback - dùng PowerShell SendKeys (nếu Bridge thất bại)
+        // Phương pháp 2: Fallback - dùng PowerShell/AppleScript (nếu Bridge thất bại)
         if (!success) {
             const { exec } = require('child_process');
-            const key = decision === 'accept' ? 'y' : '{ESC}';
+            const isWin = process.platform === 'win32';
 
-            // Script cải tiến: Escape trước để unfocus chat input, rồi mới gửi key
-            const psCommand = `powershell -Command "Add-Type -AssemblyName System.Windows.Forms; $w = New-Object -ComObject wscript.shell; $activated = $w.AppActivate('- Antigravity'); if(-not $activated) { $w.AppActivate('Antigravity') }; Start-Sleep -Milliseconds 300; [System.Windows.Forms.SendKeys]::SendWait('{ESC}'); Start-Sleep -Milliseconds 100; [System.Windows.Forms.SendKeys]::SendWait('${key}')"`;
+            if (isWin) {
+                const key = decision === 'accept' ? 'y' : '{ESC}';
+                // Script cải tiến: Escape trước để unfocus chat input, rồi mới gửi key
+                const psCommand = `powershell -Command "Add-Type -AssemblyName System.Windows.Forms; $w = New-Object -ComObject wscript.shell; $activated = $w.AppActivate('- Antigravity'); if(-not $activated) { $w.AppActivate('Antigravity') }; Start-Sleep -Milliseconds 300; [System.Windows.Forms.SendKeys]::SendWait('{ESC}'); Start-Sleep -Milliseconds 100; [System.Windows.Forms.SendKeys]::SendWait('${key}')"`;
 
-            exec(psCommand, (err) => {
-                if (err) {
-                    console.error('❌ SendKeys error:', err.message);
-                } else {
-                    console.log(`✅ Sent ${decision} (${key}) to Antigravity via SendKeys fallback`);
-                }
-            });
+                exec(psCommand, (err) => {
+                    if (err) console.error('❌ SendKeys error:', err.message);
+                    else console.log(`✅ Sent ${decision} (${key}) to Antigravity via PowerShell fallback`);
+                });
+            } else {
+                const key = decision === 'accept' ? "y" : "escape";
+                const appleScript = `
+                    tell application "System Events"
+                        try
+                            set frontmost of process "Antigravity" to true
+                            delay 0.3
+                            key code 53 -- Escape to clear focus
+                            delay 0.1
+                            ${decision === 'accept' ? 'keystroke "y"' : 'key code 53'}
+                            return "OK"
+                        on error err
+                            return "Error: " & err
+                        end try
+                    end tell
+                `;
+                exec(`osascript -e '${appleScript}'`, (err, stdout, stderr) => {
+                    if (err) console.error('❌ AppleScript error:', err.message);
+                    else console.log(`✅ Sent ${decision} to Antigravity via AppleScript fallback`, stdout.trim());
+                });
+            }
 
             success = true; // Assume success for fallback
         }

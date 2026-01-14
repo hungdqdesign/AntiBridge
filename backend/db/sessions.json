@@ -7,6 +7,22 @@
       "status": "active",
       "created_at": "2026-01-14T06:00:18.719Z",
       "updated_at": "2026-01-14T06:00:18.719Z"
+    },
+    {
+      "id": "c6f46452",
+      "repo_path": "'/Users/quanghung/My Drive (hungdqdesign@gmail.com)/10. Project/AI Project/AntiBridge-main'",
+      "branch_name": "agent/c6f46452",
+      "status": "active",
+      "created_at": "2026-01-14T06:07:34.922Z",
+      "updated_at": "2026-01-14T06:07:34.922Z"
+    },
+    {
+      "id": "19ed169c",
+      "repo_path": "auto-connect",
+      "branch_name": "agent/19ed169c",
+      "status": "active",
+      "created_at": "2026-01-14T06:15:57.448Z",
+      "updated_at": "2026-01-14T06:15:57.448Z"
     }
   ],
   "messages": [
@@ -23,6 +39,20 @@
       "role": "user",
       "content": "hi",
       "created_at": "2026-01-14T06:04:08.375Z"
+    },
+    {
+      "id": 3,
+      "session_id": "c6f46452",
+      "role": "user",
+      "content": "tìm hiểu",
+      "created_at": "2026-01-14T06:07:42.380Z"
+    },
+    {
+      "id": 4,
+      "session_id": "19ed169c",
+      "role": "user",
+      "content": "xin chào, bạn có thể làm gì",
+      "created_at": "2026-01-14T06:16:11.004Z"
     }
   ],
   "approvals": []

@@ -49,24 +49,27 @@ router.post('/', async (req, res) => {
 
         console.log(`💬 Chat: User message in session ${session_id} [mode=${send_mode}]: "${message.substring(0, 50)}..."`);
 
-        // Helper function for PowerShell clipboard method
+        // Helper function for clipboard method (PowerShell for Win, AppleScript for Mac)
         const sendViaClipboard = () => {
-            console.log('📋 Sending via PowerShell clipboard...');
+            const isWin = process.platform === 'win32';
+            console.log(`📋 Sending via ${isWin ? 'PowerShell' : 'AppleScript'} clipboard...`);
 
             const { exec } = require('child_process');
             const fs = require('fs');
             const path = require('path');
 
-            // Copy to clipboard
-            const copyProcess = exec('clip', (err) => {
+            // 1. Copy to clipboard
+            const copyCmd = isWin ? 'clip' : 'pbcopy';
+            const copyProcess = exec(copyCmd, (err) => {
                 if (err) console.error('Clipboard error:', err.message);
             });
             copyProcess.stdin.write(message);
             copyProcess.stdin.end();
 
-            // PowerShell script
-            const psScriptPath = path.join(__dirname, '..', 'temp_paste.ps1');
-            const psScript = `
+            if (isWin) {
+                // Windows: PowerShell script
+                const psScriptPath = path.join(__dirname, '..', 'temp_paste.ps1');
+                const psScript = `
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -TypeDefinition @"
 using System;
@@ -93,17 +96,33 @@ if ($proc) {
     Write-Host "Antigravity not found"
 }
 `;
-
-            fs.writeFileSync(psScriptPath, psScript, 'utf8');
-
-            exec(`powershell -ExecutionPolicy Bypass -File "${psScriptPath}"`, (err, stdout, stderr) => {
-                if (err) {
-                    console.error('❌ SendKeys error:', err.message);
-                } else {
-                    console.log('✅ Đã gửi message qua PowerShell clipboard!', stdout.trim());
-                }
-                try { fs.unlinkSync(psScriptPath); } catch (e) { }
-            });
+                fs.writeFileSync(psScriptPath, psScript, 'utf8');
+                exec(`powershell -ExecutionPolicy Bypass -File "${psScriptPath}"`, (err, stdout, stderr) => {
+                    if (err) console.error('❌ SendKeys error:', err.message);
+                    else console.log('✅ Đã gửi message qua PowerShell!', stdout.trim());
+                    try { fs.unlinkSync(psScriptPath); } catch (e) { }
+                });
+            } else {
+                // Mac: AppleScript
+                const appleScript = `
+                    tell application "System Events"
+                        try
+                            set frontmost of process "Antigravity" to true
+                            delay 0.5
+                            keystroke "v" using {command down}
+                            delay 0.3
+                            key code 36
+                            return "OK"
+                        on error err
+                            return "Error: " & err
+                        end try
+                    end tell
+                `;
+                exec(`osascript -e '${appleScript}'`, (err, stdout, stderr) => {
+                    if (err) console.error('❌ AppleScript error:', err.message);
+                    else console.log('✅ Đã gửi message qua AppleScript!', stdout.trim());
+                });
+            }
 
             return { ok: true, method: 'clipboard' };
         };

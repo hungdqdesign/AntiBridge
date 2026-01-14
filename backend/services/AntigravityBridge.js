@@ -1100,7 +1100,7 @@ class AntigravityBridge {
             const connected = await this.connect();
             if (!connected) {
                 console.log('⚠️ CDP không kết nối được, dùng PowerShell fallback...');
-                return await this.sendMessageViaPowerShell(sessionId, message);
+                return await this.sendMessageViaSystemAutomation(sessionId, message);
             }
         }
 
@@ -1132,7 +1132,7 @@ class AntigravityBridge {
 
         // ========== PRIORITY 3: POWERSHELL FALLBACK ==========
         console.log('🎯 Fallback: PowerShell clipboard...');
-        return await this.sendMessageViaPowerShell(sessionId, message);
+        return await this.sendMessageViaSystemAutomation(sessionId, message);
     }
 
     /**
@@ -1549,44 +1549,98 @@ class AntigravityBridge {
     }
 
     /**
-     * Gửi message qua PowerShell (fallback khi CDP không hoạt động)
+     * Gửi message qua PowerShell (Win) hoặc AppleScript (Mac)
+     * (fallback khi CDP không hoạt động)
      */
-    async sendMessageViaPowerShell(sessionId, message) {
+    async sendMessageViaSystemAutomation(sessionId, message) {
+        const isWin = process.platform === 'win32';
+
         return new Promise((resolve, reject) => {
-            const scriptPath = path.join(__dirname, '..', 'inject_text.ps1');
+            if (isWin) {
+                const scriptPath = path.join(__dirname, '..', 'inject_text.ps1');
+                // Escape special characters for PowerShell
+                const escapedMessage = message.replace(/"/g, '`"').replace(/\$/g, '`$');
+                const command = `powershell -ExecutionPolicy Bypass -File "${scriptPath}" -Text "${escapedMessage}"`;
 
-            // Escape special characters for PowerShell
-            const escapedMessage = message.replace(/"/g, '`"').replace(/\$/g, '`$');
+                console.log(`📤 Gửi message qua PowerShell: "${message.substring(0, 50)}..."`);
 
-            const command = `powershell -ExecutionPolicy Bypass -File "${scriptPath}" -Text "${escapedMessage}"`;
+                exec(command, { timeout: 10000 }, (error, stdout, stderr) => {
+                    if (error) {
+                        console.error('❌ PowerShell inject error:', error.message);
+                        reject(new Error(`Không thể inject text: ${error.message}`));
+                        return;
+                    }
+                    const output = stdout.trim();
+                    if (output === 'OK') {
+                        console.log('✅ Đã gửi message qua PowerShell');
 
-            console.log(`📤 Gửi message qua PowerShell: "${message.substring(0, 50)}..."`);
+                        // Emit event
+                        if (this.eventBus && sessionId) {
+                            this.eventBus.emit(sessionId, 'terminal', {
+                                line: `📤 Đã gửi (PowerShell): ${message}`
+                            });
+                        }
+                        resolve(true);
+                    } else {
+                        reject(new Error(`PowerShell failed: ${output}`));
+                    }
+                });
+            } else {
+                // Mac: AppleScript
+                console.log(`📤 Gửi message qua AppleScript: "${message.substring(0, 50)}..."`);
 
-            exec(command, { timeout: 10000 }, (error, stdout, stderr) => {
-                if (error) {
-                    console.error('❌ PowerShell inject error:', error.message);
-                    reject(new Error(`Không thể inject text: ${error.message}`));
-                    return;
-                }
+                // Copy to clipboard first (reliable for complex text)
+                const copyProcess = exec('pbcopy', (err) => {
+                    if (err) console.error('pbcopy error:', err.message);
+                });
+                copyProcess.stdin.write(message);
+                copyProcess.stdin.end();
 
-                const output = stdout.trim();
-                console.log('PowerShell output:', output);
+                const appleScript = `
+                    tell application "System Events"
+                        try
+                            -- Focus Antigravity
+                            if exists process "Antigravity" then
+                                set frontmost of process "Antigravity" to true
+                                delay 0.5
+                                -- Command + V to paste
+                                keystroke "v" using {command down}
+                                delay 0.3
+                                -- Enter to send
+                                key code 36
+                                return "OK"
+                            else
+                                return "Antigravity not found"
+                            end if
+                        on error err
+                            return "Error: " & err
+                        end try
+                    end tell
+                `;
 
-                if (output === 'OK') {
-                    console.log('✅ Đã gửi message qua PowerShell');
-
-                    // Emit event
-                    if (this.eventBus && sessionId) {
-                        this.eventBus.emit(sessionId, 'terminal', {
-                            line: `📤 Đã gửi (PowerShell): ${message}`
-                        });
+                exec(`osascript -e '${appleScript}'`, { timeout: 10000 }, (error, stdout, stderr) => {
+                    if (error) {
+                        console.error('❌ AppleScript inject error:', error.message);
+                        reject(new Error(`Không thể inject text: ${error.message}`));
+                        return;
                     }
 
-                    resolve(true);
-                } else {
-                    reject(new Error(`PowerShell failed: ${output}`));
-                }
-            });
+                    const output = stdout.trim();
+                    if (output === 'OK') {
+                        console.log('✅ Đã gửi message qua AppleScript');
+
+                        // Emit event
+                        if (this.eventBus && sessionId) {
+                            this.eventBus.emit(sessionId, 'terminal', {
+                                line: `📤 Đã gửi (AppleScript): ${message}`
+                            });
+                        }
+                        resolve(true);
+                    } else {
+                        reject(new Error(`AppleScript failed: ${output}`));
+                    }
+                });
+            }
         });
     }
 

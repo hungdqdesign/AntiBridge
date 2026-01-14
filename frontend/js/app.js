@@ -92,6 +92,14 @@ class PhoneBridgeApp {
         // Chat - click button to send
         this.elements.sendBtn.addEventListener('click', () => this.sendMessage());
 
+        // Chat - press Enter to send (Shift+Enter for new line)
+        this.elements.chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.sendMessage();
+            }
+        });
+
         // Auto-resize textarea
         this.elements.chatInput.addEventListener('input', () => {
             this.elements.chatInput.style.height = 'auto';
