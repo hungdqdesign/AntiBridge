@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="AntiBridge - Web Control for Antigravity AI Agent">
+    <meta name="author" content="Linh Bui">
+
+    <title>AntiBridge - Web Control</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Connect Screen -->
+        <div id="connect-screen" class="screen active">
+            <div class="connect-container">
+                <div class="logo">
+                    <img src="assets/Logo_AntiBridge.png" alt="AntiBridge" class="logo-img"
+                        style="width: 120px; height: auto; margin-bottom: 16px;">
+                    <h1>AntiBridge</h1>
+                    <p class="subtitle">A bridge between you and Antigravity</p>
+                </div>
+
+                <div class="connect-form">
+                    <div class="input-group">
+                        <label for="server-url">Server Address</label>
+                        <input type="url" id="server-url" placeholder="http://192.168.x.x:8000"
+                            value="http://localhost:8000">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="repo-path">Workspace Path</label>
+                        <input type="text" id="repo-path" placeholder="D:\projects\my-app">
+                    </div>
+
+                    <button id="connect-btn" class="btn-primary">
+                        <span class="btn-text">Connect</span>
+                        <span class="btn-loading hidden">Connecting...</span>
+                    </button>
+
+                    <div id="connect-error" class="error-message hidden"></div>
+                </div>
+
+                <div class="recent-sessions hidden">
+                    <h3>Recent Sessions</h3>
+                    <div id="sessions-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Screen -->
+        <div id="main-screen" class="screen">
+            <!-- Header -->
+            <header class="app-header minimal">
+                <button id="disconnect-btn" class="btn-icon" title="Disconnect">←</button>
+                <div class="header-title">
+                    <img src="assets/Logo_AntiBridge.png" alt="Logo" class="header-logo">
+                    <span class="app-name">AntiBridge</span>
+                </div>
+                <div class="header-right">
+                    <span class="status-dot" title="Connection Status"></span>
+                    <button id="settings-btn" class="btn-icon-small" title="Settings">⚙️</button>
+                </div>
+            </header>
+
+            <!-- Chat Area -->
+            <main class="chat-main">
+                <div class="messages-container" id="messages"></div>
+
+                <div class="chat-input-container">
+                    <textarea id="chat-input" placeholder="Enter command for AI agent..." rows="1"></textarea>
+                    <button id="send-btn" class="btn-send">➤</button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-backdrop" onclick="app.toggleSettings()"></div>
+            <div class="modal-content settings-card">
+                <div class="settings-header">
+                    <h3>⚙️ Settings</h3>
+                    <button class="btn-close" onclick="app.toggleSettings()">✕</button>
+                </div>
+                <div class="settings-body">
+                    <!-- Session Info -->
+                    <div class="setting-item">
+                        <label>Session</label>
+                        <div class="session-info">
+                            <span id="settings-session-id" class="session-id-display">--</span>
+                            <span id="settings-connection-status" class="connection-badge">Connected</span>
+                        </div>
+                    </div>
+
+                    <!-- Font Size Slider -->
+                    <div class="setting-item">
+                        <label>Font Size: <span id="font-size-display">16px</span></label>
+                        <input type="range" id="font-size-slider" min="6" max="20" value="16"
+                            oninput="app.setFontSize(this.value)">
+                    </div>
+
+                    <!-- Layout Scale Slider -->
+                    <div class="setting-item">
+                        <label>Layout Scale: <span id="layout-scale-display">100%</span></label>
+                        <input type="range" id="layout-scale-slider" min="50" max="150" value="100" step="10"
+                            oninput="app.setLayoutScale(this.value)">
+                    </div>
+
+                    <!-- Restart Server Button -->
+                    <div class="setting-item">
+                        <button class="btn-restart" onclick="app.restartServer()">🔄 Restart Server</button>
+                    </div>
+
+                    <!-- Version Info -->
+                    <div class="setting-item version-info">
+                        <p>AntiBridge v1.2.0</p>
+                        <p class="author"><a href="https://www.facebook.com/linhbuiart.io.vn/" target="_blank"
+                                rel="noopener">By Linh Ban Banh Bao</a></p>
+                        <p class="email"><a href="https://github.com/linhbanbanhbao/AntiBridge" target="_blank">🔗
+                                GitHub</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

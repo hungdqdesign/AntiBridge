@@ -1,0 +1,22 @@
+{
+  "sessions": [
+    {
+      "id": "74bf99c7",
+      "repo_path": "auto-connect",
+      "branch_name": "agent/74bf99c7",
+      "status": "active",
+      "created_at": "2026-01-14T06:00:18.719Z",
+      "updated_at": "2026-01-14T06:00:18.719Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "session_id": "74bf99c7",
+      "role": "user",
+      "content": "hello",
+      "created_at": "2026-01-14T06:00:31.704Z"
+    }
+  ],
+  "approvals": []
+}

@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+logs/
+backend/logs/
+
+# Runtime data
+data/chat_history.jsonl
+data/*.jsonl
+
+# Database
+backend/db/*.sqlite
+*.sqlite
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
